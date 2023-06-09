@@ -14,7 +14,7 @@ const UNSPLASH_API = "https://api.unsplash.com";
 // TODO: Global variables
 let page = 1;
 let per_page = 50;
-let storage = [];
+let storage = JSON.parse(localStorage.getItem("IMAGES") || "[]");
 
 // TODO: Fetch unplash api
 async function fetchImages(query) {
@@ -81,11 +81,13 @@ function renderImages(images) {
 
     span.addEventListener("click", function () {
       span.innerHTML = `<i class="fa-solid fa-check"></i>`;
+      span.style.pointerEvents = "none";
       const imageInfo = {
         imageUrl: item.urls.regular,
         author: item.user.first_name,
       };
       storage.push(imageInfo);
+      localStorage.setItem("IMAGES", JSON.stringify(storage));
       renderStorage();
     });
 
@@ -127,3 +129,4 @@ function renderStorage() {
     personalGallery.insertAdjacentHTML("beforeend", template);
   });
 }
+renderStorage();
